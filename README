@@ -1,0 +1,14 @@
+Project     : LastWord
+			   Deterministic password generator, manager
+Created By  : LoneFry
+			   dev@lonefry.com
+License     : CC BY-NC-SA
+			   Creative Commons Attribution-NonCommercial-ShareAlike
+			   http://creativecommons.org/licenses/by-nc-sa/3.0/
+History     : 2007-12-05 - deterministic password regeneration idea
+			  2007-12-06 - Proof-of-concept built, named "LastWord"
+			  2008-02-21 - lastword.me/lastpassword.net launched
+			  2011-02-21 - lastword.me/lastpassword.net retired
+			  2012-05-25 - LastWord refactored and added to git
+Dependencies: Graphite - https://github.com/LoneFry/Graphite/
+
