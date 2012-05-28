@@ -1,0 +1,43 @@
+/*
+#99cc66 mid green
+#669933 dark green
+#ccff99 light green
+#993333 dark red
+#ffffcc light yellow
+*/
+
+html {background-color:#669933;}
+body {background-color:#ffffcc;width:900px;margin:0 auto;}
+div#header {width:874px;background-color:#99cc66;border-bottom:3px solid #993333;padding:13px;color:#993333;}
+div#header a {color:#993333;}
+div#header h1 {color:#669933;}
+div#subheader {text-align:right;;padding:13px;}
+div#subheader a {color:#993333;}
+div#msg, div#msg > span {background-color:inherit;}
+div#body {margin:0;padding:0;border:0;font:0.9em verdana, tahoma, sans-serif;}
+div#footer {width:874px;}
+
+div.lastWord {width:874px;margin:0 auto;padding:13px;background-color:#ffffcc;}
+div.lastWord a {color:#993333;font:1em verdana, tahoma, sans-serif;}
+div.lastWord a:hover {color:#669933;}
+
+div.lastWord div.form {width:770px;margin:20px auto;background:url("/^LastWord/images/form-bg.png") repeat-y;}
+div.lastWord div.form div.top {width:770px;height:40px;background:url("/^LastWord/images/form-top.png") no-repeat top;}
+div.lastWord div.form div.top h3 {padding:10px 20px;margin:0;}
+div.lastWord div.form div.bottom {width:770px;height:10px;background:url("/^LastWord/images/form-bottom.png") no-repeat bottom;}
+div.lastWord div.form form {margin:0 10px;padding:0;}
+
+div.lastWord form#lw_editForm th{text-align:right;}
+div.lastWord table#lastword_list{margin:0 auto;font-size:0.8em;width:750px;}
+div.lastWord td.checker2 {background-image:url("/^LastWord/images/checker2.gif");}
+div.lastWord .resetCount{text-align:center;}
+div.lastWord .resetCount a{text-decoration:none;}
+div.lastWord .highlight, div.lastWord #highlight, div.lastWord #highlight td{background-color:#ccff99;}
+
+div.lastWord table#lastword_list a {visibility:hidden;}
+div.lastWord table#lastword_list tr#highlight a {visibility:visible;}
+
+div.lastWord #lwlogin {display:none;}
+
+div.footer {width:874px;margin:0 auto;padding:13px;background-color:#ffffcc;clear:both;}
+div.footer p {margin:0;padding:0;color:#9c9a9c;font:0.8em verdana, tahoma, sans-serif;}
