@@ -26,6 +26,7 @@ class LastWordController extends Controller {
 		
 		G::$V->_link('stylesheet', 'text/css', '/^LastWord/css/lastword.css');
 		G::$V->_script('/^LastWord/js/lastword.js');
+		G::$V->_script('/^LastWord/js/sha1.js');
 		G::$V->_script('/^LastWord/js/ajas.js');
 		G::$V->_script('/^LastWord/js/ajas.util.js');
 		G::$V->_script('/^LastWord/js/ajas.http.js');

@@ -2,7 +2,7 @@
 		<div class="lastWord">
 			<div class="form">
 				<div class="top">
-					<a class="fright" href="/LastWord/add">Add Service</a>
+					<a style="float:right;" href="/LastWord/add">Add Service</a>
 					<h3>Master Key</h3>
 				</div>
 				<form action="" method="post" onsubmit="return ajas.event.cancelBubble(event) && false;"><div>
