@@ -18,26 +18,26 @@ require_once LIB.'/Record.php';
  * see Record.php for details.
  */
 class Website extends Record {
-	protected static $table = 'LW_Websites';
-	protected static $pkey  = 'lww_id';
-	protected static $query = '';
-	
+    protected static $table = 'LW_Websites';
+    protected static $pkey  = 'lww_id';
+    protected static $query = '';
+    
     public static function prime() {
-		self::$table = G::$M->tabl.self::$table;
-		self::$query = 'SELECT t.`lww_id`, t.`label`, t.`loginURI`, '
-			.'t.`userField`, t.`passField`, t.`iDateCreated`, t.`iDateModified`'
-			.' FROM `'.self::$table.'` t';
-		self::$vars['iDateCreated']['def'] = NOW;
+        self::$table = G::$M->tabl.self::$table;
+        self::$query = 'SELECT t.`lww_id`, t.`label`, t.`loginURI`, '
+            .'t.`userField`, t.`passField`, t.`iDateCreated`, t.`iDateModified`'
+            .' FROM `'.self::$table.'` t';
+        self::$vars['iDateCreated']['def'] = NOW;
     }
-	
-	protected static $vars = array(
-		'lww_id'        =>array('type'=>'i', 'min'=>1, 'guard'=>true),
-		'label'         =>array('type'=>'s', 'max'=>255),
-		'loginURI'      =>array('type'=>'s', 'max'=>255),
-		'userField'     =>array('type'=>'s', 'max'=>255),
-		'passField'     =>array('type'=>'s', 'max'=>255),
-		'iDateCreated'  =>array('type'=>'ts'),
-		'iDateModified' =>array('type'=>'ts'),
-	);
+    
+    protected static $vars = array(
+        'lww_id'        =>array('type'=>'i', 'min'=>1, 'guard'=>true),
+        'label'         =>array('type'=>'s', 'max'=>255),
+        'loginURI'      =>array('type'=>'s', 'max'=>255),
+        'userField'     =>array('type'=>'s', 'max'=>255),
+        'passField'     =>array('type'=>'s', 'max'=>255),
+        'iDateCreated'  =>array('type'=>'ts'),
+        'iDateModified' =>array('type'=>'ts'),
+    );
 }
 Website::prime();

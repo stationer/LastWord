@@ -244,45 +244,45 @@ ajas.util.tableSort=function(tbody_id, col, t){
 };
 
 ajas.util.tableSort.compareRow=function(a,b) {
-	var col=ajas.util.tableSort.sortCol;
-	if ("input"==ajas.util.tableSort.sortType) {
-		return ts_stringComparator(a.cells[col].childNodes[0].value, 
-			b.cells[col].childNodes[0].value);
-	}
-	var typ=ajas.util.tableSort.sortType,
-		dir=ajas.util.tableSort.sortDir;
-	var valA,valB;
-	if(a.cells[col].childNodes[0] && typeof(a.cells[col].childNodes[0])=='object' && typeof(a.cells[col].childNodes[0].selectedIndex) != 'undefined' && typ!='last'){
-		valA=a.cells[col].childNodes[0].options[a.cells[col].childNodes[0].selectedIndex].value;
-	}else if(a.cells[col].childNodes[0] && typeof(a.cells[col].childNodes[0])=='object' && typeof(a.cells[col].childNodes[0].value) != 'undefined' && typ!='last'){
-		valA=a.cells[col].childNodes[0].value;
-	}else{
-		valA=a.cells[col].innerHTML;
-	}
-	if(b.cells[col].childNodes[0] && typeof(b.cells[col].childNodes[0])=='object' && typeof(b.cells[col].childNodes[0].selectedIndex) != 'undefined' && typ!='last'){
-		valB=b.cells[col].childNodes[0].options[b.cells[col].childNodes[0].selectedIndex].value;
-	}else if(b.cells[col].childNodes[0] && typeof(b.cells[col].childNodes[0])=='object' && typeof(b.cells[col].childNodes[0].value) != 'undefined' && typ!='last'){
-		valB=b.cells[col].childNodes[0].value;
-	}else{
-		valB=b.cells[col].innerHTML;
-	}
-	if (typ == "str") {
-		return dir*ajas.util.compare(valA.toLowerCase(), valB.toLowerCase());
-	} else if (typ == "date") {
-		return dir*ajas.util.compare(new Date(valA), new Date(valB));
-	} else if (typ == "year/month") {
-		var re=/([\d]{4}), ([\w]+)/;
-		return dir*ajas.util.compare(new Date(valA.replace(re,"$2 1, $1")),
-			new Date(valB.replace(re,"$2 1, $1")));
-	} else if (typ == "num") {
-		re=/\$|%|,/g;
-		return dir*ajas.util.compare(new Number(valA.replace(re,"")),
-			new Number(valB.replace(re,"")));
-	} else if (typ == "last") {
-		return dir*ajas.util.compare(valA.split(' ').pop().toLowerCase(),
-			valB.split(' ').pop().toLowerCase());
-	} else {
-		return 0;
-	}
+    var col=ajas.util.tableSort.sortCol;
+    if ("input"==ajas.util.tableSort.sortType) {
+        return ts_stringComparator(a.cells[col].childNodes[0].value, 
+            b.cells[col].childNodes[0].value);
+    }
+    var typ=ajas.util.tableSort.sortType,
+        dir=ajas.util.tableSort.sortDir;
+    var valA,valB;
+    if(a.cells[col].childNodes[0] && typeof(a.cells[col].childNodes[0])=='object' && typeof(a.cells[col].childNodes[0].selectedIndex) != 'undefined' && typ!='last'){
+        valA=a.cells[col].childNodes[0].options[a.cells[col].childNodes[0].selectedIndex].value;
+    }else if(a.cells[col].childNodes[0] && typeof(a.cells[col].childNodes[0])=='object' && typeof(a.cells[col].childNodes[0].value) != 'undefined' && typ!='last'){
+        valA=a.cells[col].childNodes[0].value;
+    }else{
+        valA=a.cells[col].innerHTML;
+    }
+    if(b.cells[col].childNodes[0] && typeof(b.cells[col].childNodes[0])=='object' && typeof(b.cells[col].childNodes[0].selectedIndex) != 'undefined' && typ!='last'){
+        valB=b.cells[col].childNodes[0].options[b.cells[col].childNodes[0].selectedIndex].value;
+    }else if(b.cells[col].childNodes[0] && typeof(b.cells[col].childNodes[0])=='object' && typeof(b.cells[col].childNodes[0].value) != 'undefined' && typ!='last'){
+        valB=b.cells[col].childNodes[0].value;
+    }else{
+        valB=b.cells[col].innerHTML;
+    }
+    if (typ == "str") {
+        return dir*ajas.util.compare(valA.toLowerCase(), valB.toLowerCase());
+    } else if (typ == "date") {
+        return dir*ajas.util.compare(new Date(valA), new Date(valB));
+    } else if (typ == "year/month") {
+        var re=/([\d]{4}), ([\w]+)/;
+        return dir*ajas.util.compare(new Date(valA.replace(re,"$2 1, $1")),
+            new Date(valB.replace(re,"$2 1, $1")));
+    } else if (typ == "num") {
+        re=/\$|%|,/g;
+        return dir*ajas.util.compare(new Number(valA.replace(re,"")),
+            new Number(valB.replace(re,"")));
+    } else if (typ == "last") {
+        return dir*ajas.util.compare(valA.split(' ').pop().toLowerCase(),
+            valB.split(' ').pop().toLowerCase());
+    } else {
+        return 0;
+    }
 };
 
