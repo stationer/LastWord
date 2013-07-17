@@ -8,14 +8,14 @@
 
 html {background-color:#669933;}
 body {background-color:#ffffcc;width:900px;margin:0 auto;}
-div#header {width:874px;background-color:#99cc66;border-bottom:3px solid #993333;padding:13px;color:#993333;}
-div#header a {color:#993333;}
-div#header h1 {color:#669933;}
-div#subheader {text-align:right;;padding:13px;}
-div#subheader a {color:#993333;}
-div#msg, div#msg > span {background-color:inherit;}
-div#body {margin:0;padding:0;border:0;font:0.9em verdana, tahoma, sans-serif;}
-div#footer {width:874px;}
+body > div#header {width:874px;background-color:#99cc66;border-bottom:3px solid #993333;padding:13px;color:#993333;}
+body > div#header a {color:#993333;}
+body > div#header h1 {color:#669933;}
+body > div#subheader {text-align:right;background-color:#993333;padding:0 13px 4px 13px;}
+body > div#subheader a {color:#ffffcc;}
+body > div#msg, div#msg > span {background-color:inherit;}
+body > div#body {margin:0;padding:0;border:0;font:0.9em verdana, tahoma, sans-serif;}
+body > div#footer {width:874px;}
 
 div.lastWord {width:874px;margin:0 auto;padding:13px;background-color:#ffffcc;}
 div.lastWord a {color:#993333;font:1em verdana, tahoma, sans-serif;}
