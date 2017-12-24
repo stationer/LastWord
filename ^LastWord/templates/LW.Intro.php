@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php echo $this->render('header'); ?>
         <div class="lastWord">
 
 <!--
@@ -59,4 +59,4 @@ href="http://keepass.info/">KeePass</a>.</p>
             </p>
             <p><a href="/LastWord/list">View your list</a></p>
         </div>
-<?php get_footer(); ?>
+<?php echo $this->render('footer');

@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php echo $this->render('header'); ?>
         <div class="lastWord">
             <div class="form">
                 <div class="top"><h3>Edit An Account</h3></div>
@@ -69,5 +69,5 @@
         </div>
         <script type="text/javascript"><!--
             var aLoginDetails = <?php echo json_encode($Websites); ?>;
-            //--></script>
-<?php get_footer(); ?>
+            // --></script>
+<?php echo $this->render('footer');

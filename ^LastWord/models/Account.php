@@ -11,7 +11,6 @@
  *                An Account for which the user stores/generates credentials
  ****************************************************************************/
 
-require_once LIB.'/Record.php';
 
 /*
  * Account - 

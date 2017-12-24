@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php echo $this->render('header'); ?>
         <div class="lastWord">
             <div class="form">
                 <div class="top">
@@ -52,5 +52,5 @@
         </div>
         <script type="text/javascript"><!--
             aList=<?php echo $json; ?>;
-            //--></script>
-<?php get_footer(); ?>
+            // --></script>
+<?php echo $this->render('footer');

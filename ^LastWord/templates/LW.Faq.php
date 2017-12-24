@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php echo $this->render('header'); ?>
         <div class="lastWord">
             <h2>What is "Last Word"?</h2>
             <p>Last Word is a password management system that works by assigning
@@ -52,4 +52,4 @@
             </p>
             <p><a href="/LastWord/list">View your list</a></p>
         </div>
-<?php get_footer(); ?>
+<?php echo $this->render('footer');

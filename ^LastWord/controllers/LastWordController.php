@@ -1,248 +1,333 @@
 <?php
-/*****************************************************************************
- * Project     : LastWord
- *                Deterministic Password Generator
- * Created By  : LoneFry
- *                dev@lonefry.com
- * License     : CC BY-NC-SA
- *                Creative Commons Attribution-NonCommercial-ShareAlike
- *                http://creativecommons.org/licenses/by-nc-sa/3.0/
- * File        : /^LastWord/controllers/LastWordController.php
- *                An Account for which the user stores/generates credentials
- ****************************************************************************/
+/**
+ * Main Controller for 'LastWord' Deterministic Password (Re)Generator
+ * File: /^Batty/controllers/LastWordController.php
+ *
+ * PHP version 5.3
+ *
+ * @category LoneFry
+ * @package  LastWord
+ * @author   LoneFry <dev@lonefry.com>
+ * @license  Creative Commons CC-NC-BY-SA
+ * @link     http://github.com/LoneFry/LastWord
+ */
 
-require_once dirname(__DIR__).'/models/Account.php';
-require_once dirname(__DIR__).'/models/Website.php';
 
-/*
- * LastWordController class - 
- * Controller for "LastWord" app
+/**
+ * LastWordController class -
+ * Main Controller for 'LastWord' Deterministic Password (Re)Generator
+ * File: /^Batty/controllers/LastWordController.php
+ *
+ * PHP version 5.3
+ *
+ * @category LoneFry
+ * @package  LastWord
+ * @author   LoneFry <dev@lonefry.com>
+ * @license  Creative Commons CC-NC-BY-SA
+ * @link     http://github.com/LoneFry/LastWord
  */
 class LastWordController extends Controller {
-    protected $action='intro';
-    
-    public function __construct($argv = array()) {
-        parent::__construct($argv);
-        
-        G::$V->_link('stylesheet', 'text/css', '/^LastWord/css/lastword.css');
-        G::$V->_script('/^LastWord/js/lastword.js');
-        G::$V->_script('/^LastWord/js/sha1.js');
-        G::$V->_script('/^LastWord/js/ajas.js');
-        G::$V->_script('/^LastWord/js/ajas.util.js');
-        G::$V->_script('/^LastWord/js/ajas.http.js');
-        G::$V->_script('/^LastWord/js/ajas.event.js');
-        G::$V->setTemplate('subheader', 'subheader.php');
+    protected $action = 'intro';
+
+    /**
+     * LastWordController constructor.
+     *
+     * @param array         $argv Argument list passed from Dispatcher
+     * @param IDataProvider $DB   DataProvider to use with Controller
+     * @param View          $View Graphite View helper
+     */
+    public function __construct($argv = [], IDataProvider $DB = null, View $View = null) {
+        parent::__construct($argv, $DB, $View);
+
+        $this->View->_link('stylesheet', 'text/css', '/^LastWord/css/lastword.css');
+        $this->View->_script('/^LastWord/js/lastword.js');
+        $this->View->_script('/^LastWord/js/sha1.js');
+        $this->View->_script('/^LastWord/js/ajas.js');
+        $this->View->_script('/^LastWord/js/ajas.util.js');
+        $this->View->_script('/^LastWord/js/ajas.http.js');
+        $this->View->_script('/^LastWord/js/ajas.event.js');
+        $this->View->setTemplate('subheader', 'LW.subheader.php');
     }
 
-    public function do_intro($argv) {
-        G::$V->_template = 'LW.Intro.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord';
+    /**
+     * Intro Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_intro(array $argv = [], array $request = []) {
+        $this->View->_template = 'LW.Intro.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord';
+
+        return $this->View;
     }
-    public function do_faq($argv) {
-        G::$V->_template = 'LW.Faq.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord : Frequently Anticipated Questions';
+
+    /**
+     * FAQ Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_faq(array $argv = [], array $request = []) {
+        $this->View->_template = 'LW.Faq.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord : Frequently Anticipated Questions';
+
+        return $this->View;
     }
-    public function do_list($argv) {
+
+    /**
+     * List Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_list(array $argv = [], array $request = []) {
         if (!G::$S || !G::$S->Login) {
             G::msg('You must be logged in to perform this action.', 'error');
+
             return $this->do_intro($argv);
         }
-        G::$V->_template = 'LW.List.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord : List';
-        
-        $A = new Account(array('login_id' => G::$S->Login->login_id));
-        $A = $A->search(100, 0, 'service');
-        $B = array();
-        foreach ($A as $k => $v) {
-            $B[$k] = $v->getAll();
-        }
-        G::$V->list = $A;
-        G::$V->json = json_encode($B);
+        $this->View->_template = 'LW.List.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord : List';
+
+        $Account          = $this->DB->fetch(Account::class, ['login_id' => G::$S->Login->login_id],
+            ['service' => true]);
+        $this->View->list = $Account;
+        $this->View->json = json_encode($Account);
+
+        return $this->View;
     }
-    
-    public function do_add($argv) {
+
+    /**
+     * Add Account Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_add(array $argv = [], array $request = []) {
         if (!G::$S || !G::$S->Login) {
             G::msg('You must be logged in to perform this action.', 'error');
+
             return $this->do_intro($argv);
         }
-        G::$V->_template = 'LW.Add.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord : Add New';
-        
-        $A = new Account(true);
-        if (isset($_POST['service'])
-            && isset($_POST['loginURI'])
-            && isset($_POST['userField'])
-            && isset($_POST['passField'])
-            && isset($_POST['username'])
+        $this->View->_template = 'LW.Add.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord : Add New';
+
+        $Account = G::build(Account::class, true);
+        if (isset($request['service'])
+            && isset($request['loginURI'])
+            && isset($request['userField'])
+            && isset($request['passField'])
+            && isset($request['username'])
         ) {
-            $A->service   = $_POST['service'];
-            $A->loginURI  = $_POST['loginURI'];
-            $A->userField = $_POST['userField'];
-            $A->passField = $_POST['passField'];
-            $A->username  = $_POST['username'];
-            $A->login_id  = G::$S->Login->login_id;
-            
-            if ('' == $A->service) {
+            $Account->service   = $request['service'];
+            $Account->loginURI  = $request['loginURI'];
+            $Account->userField = $request['userField'];
+            $Account->passField = $request['passField'];
+            $Account->username  = $request['username'];
+            $Account->login_id  = G::$S->Login->login_id;
+
+            if ('' == $Account->service) {
                 G::msg('Service name must not be blank', 'error');
-            } elseif ('' == $A->username) {
+            } elseif ('' == $Account->username) {
                 G::msg('Username must not be blank', 'error');
-            } elseif (false !== $A->save()) {
+            } elseif (false !== $this->DB->save($Account)) {
                 G::msg('Added Account');
+
                 return $this->do_list($argv);
             } else {
                 G::msg('Failed to add account.', 'error');
             }
         }
-        G::$V->account = $A;
-        $websites = Website::all();
-        foreach ($websites as $k => $v) {
-            $websites[$k] = $v->getAll();
-        }
-        G::$V->Websites = $websites;
+        $this->View->account  = $Account;
+        $websites             = $this->DB->fetch(Website::class);
+        $this->View->Websites = $websites;
+
+        return $this->View;
     }
-    public function do_edit($argv) {
+
+    /**
+     * Edit Account Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_edit(array $argv = [], array $request = []) {
         if (!G::$S || !G::$S->Login) {
             G::msg('You must be logged in to perform this action.', 'error');
+
             return $this->do_intro($argv);
         }
         if (!isset($argv[1]) || !is_numeric($argv[1])) {
             return $this->do_list($argv);
         }
-        G::$V->_template = 'LW.Edit.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord : Edit';
-        
-        if ((false === $A = Account::byId($argv[1]))
-            || G::$S->Login->login_id != $A->login_id
-        ) {
+        $this->View->_template = 'LW.Edit.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord : Edit';
+
+        $Account = $this->DB->byPK(Account::class, $argv[1]);
+        if (false === $Account || G::$S->Login->login_id != $Account->login_id) {
             G::msg('Requested LastWord Account not found', 'error');
         }
-        
-        if (isset($_POST['lwr_id']) && is_numeric($_POST['lwr_id'])
-            && isset($_POST['delete']) && is_numeric($_POST['delete'])
-            && $_POST['delete'] == $A->lwr_id
+
+        if (isset($request['lwr_id']) && is_numeric($request['lwr_id'])
+            && isset($request['delete']) && is_numeric($request['delete'])
+            && $request['delete'] == $Account->lwr_id
         ) {
-            if (false !== $A->delete()) {
+            $result = $this->DB->delete($Account);
+            if (true === $result) {
                 G::msg('Deleted Account');
+
                 return $this->do_list($argv);
             } else {
                 G::msg('Failed to delete account.', 'error');
             }
         }
-        if (isset($_POST['lwr_id']) && is_numeric($_POST['lwr_id'])
-            && isset($_POST['service'])
-            && isset($_POST['loginURI'])
-            && isset($_POST['userField'])
-            && isset($_POST['passField'])
-            && isset($_POST['username'])
-            && isset($_POST['passLen'])
-            && isset($_POST['resetCount'])
+        if (isset($request['lwr_id']) && is_numeric($request['lwr_id'])
+            && isset($request['service'])
+            && isset($request['loginURI'])
+            && isset($request['userField'])
+            && isset($request['passField'])
+            && isset($request['username'])
+            && isset($request['passLen'])
+            && isset($request['resetCount'])
         ) {
-            $A->service       = $_POST['service'];
-            $A->loginURI      = $_POST['loginURI'];
-            $A->userField     = $_POST['userField'];
-            $A->passField     = $_POST['passField'];
-            $A->username      = $_POST['username'];
-            $A->passLen       = $_POST['passLen'];
-            $A->resetCount    = $_POST['resetCount'];
-            $A->iDateModified = NOW;
-            
-            if ('' == $A->service) {
+            $Account->service       = $request['service'];
+            $Account->loginURI      = $request['loginURI'];
+            $Account->userField     = $request['userField'];
+            $Account->passField     = $request['passField'];
+            $Account->username      = $request['username'];
+            $Account->passLen       = $request['passLen'];
+            $Account->resetCount    = $request['resetCount'];
+            $Account->iDateModified = NOW;
+
+            if ('' == $Account->service) {
                 G::msg('Service name must not be blank', 'error');
-            } elseif ('' == $A->username) {
+            } elseif ('' == $Account->username) {
                 G::msg('Username must not be blank', 'error');
-            } elseif (false !== $A->save()) {
+            } elseif (false !== $this->DB->save($Account)) {
                 G::msg('Edited Account');
+
                 return $this->do_list($argv);
             } else {
                 G::msg('Failed to edit account.', 'error');
             }
         }
-        G::$V->account = $A;
-        $websites = Website::all();
-        foreach ($websites as $k => $v) {
-            $websites[$k] = $v->getAll();
-        }
-        G::$V->Websites = $websites;
+        $this->View->account  = $Account;
+        $websites             = $this->DB->fetch(Website::class);
+        $this->View->Websites = $websites;
+
+        return $this->View;
     }
-    
-    public function do_websites($argv) {
+
+    /**
+     * Website list management Page
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_websites(array $argv = [], array $request = []) {
         if (!G::$S->roleTest('LastWord/Admin')) {
             G::msg('You must be a LastWord Admin to perform this action.', 'error');
+
             return $this->do_intro($argv);
         }
-        G::$V->_template = 'LW.Websites.php';
-        G::$V->_title    = G::$V->_siteName.' : LastWord : Websites Admin';
+        $this->View->_template = 'LW.Websites.php';
+        $this->View->_title    = $this->View->_siteName.' : LastWord : Websites Admin';
 
-        if (isset($_POST['lww_id']) && is_numeric($_POST['lww_id'])
-            && isset($_POST['delete']) && $_POST['delete'] == 1
+        if (isset($request['lww_id']) && is_numeric($request['lww_id'])
+            && isset($request['delete']) && $request['delete'] == 1
         ) {
-            $A = new Website($_POST['lww_id']);
-            if (false !== $A->delete()) {
+            $Account = G::build(Website::class, $request['lww_id']);
+            if (true === $Account->delete()) {
                 G::msg('Deleted Website Descriptor');
+
                 return $this->do_list($argv);
             } else {
                 G::msg('Failed to delete Website Descriptor.', 'error');
             }
         }
-        if (isset($_POST['lww_id'])
-            && isset($_POST['label'])
-            && isset($_POST['loginURI'])
-            && isset($_POST['userField'])
-            && isset($_POST['passField'])
+        if (isset($request['lww_id'])
+            && isset($request['label'])
+            && isset($request['loginURI'])
+            && isset($request['userField'])
+            && isset($request['passField'])
         ) {
-            if (0 == $_POST['lww_id']) {
-                $A = new Website();
+            if (0 == $request['lww_id']) {
+                $Account = G::build(Website::class);
             } else {
-                $A = Website::byId($_POST['lww_id']);
+                $Account = $this->DB->byPK(Website::class, $request['lww_id']);
             }
-            $A->label         = $_POST['label'];
-            $A->loginURI      = $_POST['loginURI'];
-            $A->userField     = $_POST['userField'];
-            $A->passField     = $_POST['passField'];
-            $A->iDateModified = NOW;
-            
-            if ('' == $A->label) {
+            $Account->label         = $request['label'];
+            $Account->loginURI      = $request['loginURI'];
+            $Account->userField     = $request['userField'];
+            $Account->passField     = $request['passField'];
+            $Account->iDateModified = NOW;
+
+            if ('' == $Account->label) {
                 G::msg('Website descriptor name must not be blank', 'error');
-            } elseif (false !== $A->save()) {
+            } elseif (false !== $this->DB->save($Account)) {
                 G::msg('Saved Website');
+
                 return $this->do_list($argv);
             } else {
                 G::msg('Failed to save Website.', 'error');
             }
         }
-        $websites = Website::all();
+        $websites = $this->DB->fetch(Website::class);
         foreach ($websites as $k => $v) {
             $websites[$k] = $v->getAll();
         }
-        G::$V->Websites = $websites;
+        $this->View->Websites = $websites;
+
+        return $this->View;
     }
-    
-    public function do_json($argv) {
-        $json = array('success' => false);
+
+    /**
+     * Ajax handler for count adjustments
+     *
+     * @param array $argv    Argument list passed from Dispatcher
+     * @param array $request Request_method-specific parameters
+     *
+     * @return View
+     */
+    public function do_json(array $argv = [], array $request = []) {
+        $json = ['success' => false];
         if (!G::$S || !G::$S->Login) {
             $json['alert'] = 'You must be logged in to do that!';
             die(json_encode($json));
         }
-        
-        if (!isset($_POST['lwr_id']) || !isset($_POST['resetCount'])) {
+
+        if (!isset($request['lwr_id']) || !isset($request['resetCount'])) {
             $json['alert'] = 'Expected parameters not found!';
             die(json_encode($json));
         }
-        
-        if (false === $lwr = Account::byId($_POST['lwr_id'])) {
+        $Account = $this->DB->byPK(Account::class, $request['lwr_id']);
+        if (false === $Account) {
             $json['alert'] = 'Specified id was not found!';
             die(json_encode($json));
         }
-        if ($lwr->login_id != G::$S->Login->login_id) {
+        if ($Account->login_id != G::$S->Login->login_id) {
             $json['alert'] = 'Specified id was not found!';
             die(json_encode($json));
         }
-        
-        $lwr->resetCount    = $_POST['resetCount'];
-        $lwr->iDateModified = NOW;
-        if (false === $lwr->save()) {
+
+        $Account->resetCount    = $request['resetCount'];
+        $Account->iDateModified = NOW;
+        if (false === $this->DB->save($Account)) {
             die(json_encode($json));
-        }else{
+        } else {
             $json['success'] = true;
             die(json_encode($json));
         }
