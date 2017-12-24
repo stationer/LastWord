@@ -1,9 +1,9 @@
 <?php
 /**
  * Main Controller for 'LastWord' Deterministic Password (Re)Generator
- * File: /^Batty/controllers/LastWordController.php
+ * File: /^LastWord/controllers/LastWordController.php
  *
- * PHP version 5.3
+ * PHP version 7
  *
  * @category LoneFry
  * @package  LastWord
@@ -12,13 +12,12 @@
  * @link     http://github.com/LoneFry/LastWord
  */
 
-
 /**
  * LastWordController class -
  * Main Controller for 'LastWord' Deterministic Password (Re)Generator
- * File: /^Batty/controllers/LastWordController.php
+ * File: /^LastWord/controllers/LastWordController.php
  *
- * PHP version 5.3
+ * PHP version 7
  *
  * @category LoneFry
  * @package  LastWord
@@ -93,13 +92,13 @@ class LastWordController extends Controller {
 
             return $this->do_intro($argv);
         }
+
+        $Account = $this->DB->fetch(Account::class, ['login_id' => G::$S->Login->login_id], ['service' => true]);
+
         $this->View->_template = 'LW.List.php';
         $this->View->_title    = $this->View->_siteName.' : LastWord : List';
-
-        $Account          = $this->DB->fetch(Account::class, ['login_id' => G::$S->Login->login_id],
-            ['service' => true]);
-        $this->View->list = $Account;
-        $this->View->json = json_encode($Account);
+        $this->View->list      = $Account;
+        $this->View->json      = json_encode($Account);
 
         return $this->View;
     }
@@ -122,17 +121,11 @@ class LastWordController extends Controller {
         $this->View->_title    = $this->View->_siteName.' : LastWord : Add New';
 
         $Account = G::build(Account::class, true);
-        if (isset($request['service'])
-            && isset($request['loginURI'])
-            && isset($request['userField'])
-            && isset($request['passField'])
-            && isset($request['username'])
-        ) {
-            $Account->service   = $request['service'];
-            $Account->loginURI  = $request['loginURI'];
-            $Account->userField = $request['userField'];
-            $Account->passField = $request['passField'];
-            $Account->username  = $request['username'];
+        $fields = ['service', 'loginURI', 'userField', 'passField', 'username'];
+        if (array_keys_exist($fields, $request)) {
+            // Filter POST data to expected fields
+            $request = array_intersect_key($request, array_flip($fields));
+            $Account->setAll($request);
             $Account->login_id  = G::$S->Login->login_id;
 
             if ('' == $Account->service) {
@@ -147,9 +140,8 @@ class LastWordController extends Controller {
                 G::msg('Failed to add account.', 'error');
             }
         }
+        $this->View->Websites = $this->DB->fetch(Website::class);
         $this->View->account  = $Account;
-        $websites             = $this->DB->fetch(Website::class);
-        $this->View->Websites = $websites;
 
         return $this->View;
     }
@@ -192,22 +184,13 @@ class LastWordController extends Controller {
                 G::msg('Failed to delete account.', 'error');
             }
         }
+        $fields = ['service', 'loginURI', 'userField', 'passField', 'username', 'passLen', 'resetCount'];
         if (isset($request['lwr_id']) && is_numeric($request['lwr_id'])
-            && isset($request['service'])
-            && isset($request['loginURI'])
-            && isset($request['userField'])
-            && isset($request['passField'])
-            && isset($request['username'])
-            && isset($request['passLen'])
-            && isset($request['resetCount'])
+            && array_keys_exist($fields, $request)
         ) {
-            $Account->service       = $request['service'];
-            $Account->loginURI      = $request['loginURI'];
-            $Account->userField     = $request['userField'];
-            $Account->passField     = $request['passField'];
-            $Account->username      = $request['username'];
-            $Account->passLen       = $request['passLen'];
-            $Account->resetCount    = $request['resetCount'];
+            // Filter POST data to expected fields
+            $request = array_intersect_key($request, array_flip($fields));
+            $Account->setAll($request, true);
             $Account->iDateModified = NOW;
 
             if ('' == $Account->service) {
@@ -223,8 +206,7 @@ class LastWordController extends Controller {
             }
         }
         $this->View->account  = $Account;
-        $websites             = $this->DB->fetch(Website::class);
-        $this->View->Websites = $websites;
+        $this->View->Websites = $this->DB->fetch(Website::class);
 
         return $this->View;
     }
@@ -249,8 +231,8 @@ class LastWordController extends Controller {
         if (isset($request['lww_id']) && is_numeric($request['lww_id'])
             && isset($request['delete']) && $request['delete'] == 1
         ) {
-            $Account = G::build(Website::class, $request['lww_id']);
-            if (true === $Account->delete()) {
+            $Website = G::build(Website::class, $request['lww_id']);
+            if (true === $Website->delete()) {
                 G::msg('Deleted Website Descriptor');
 
                 return $this->do_list($argv);
@@ -258,26 +240,21 @@ class LastWordController extends Controller {
                 G::msg('Failed to delete Website Descriptor.', 'error');
             }
         }
-        if (isset($request['lww_id'])
-            && isset($request['label'])
-            && isset($request['loginURI'])
-            && isset($request['userField'])
-            && isset($request['passField'])
-        ) {
+        $fields = ['lww_id', 'label', 'loginURI', 'passField', 'username'];
+        if (array_keys_exist($fields, $request)) {
             if (0 == $request['lww_id']) {
-                $Account = G::build(Website::class);
+                $Website = G::build(Website::class);
             } else {
-                $Account = $this->DB->byPK(Website::class, $request['lww_id']);
+                $Website = $this->DB->byPK(Website::class, $request['lww_id']);
             }
-            $Account->label         = $request['label'];
-            $Account->loginURI      = $request['loginURI'];
-            $Account->userField     = $request['userField'];
-            $Account->passField     = $request['passField'];
-            $Account->iDateModified = NOW;
+            // Filter POST data to expected fields
+            $request = array_intersect_key($request, array_flip($fields));
+            $Website->setAll($request, true);
+            $Website->iDateModified = NOW;
 
-            if ('' == $Account->label) {
+            if ('' == $Website->label) {
                 G::msg('Website descriptor name must not be blank', 'error');
-            } elseif (false !== $this->DB->save($Account)) {
+            } elseif (false !== $this->DB->save($Website)) {
                 G::msg('Saved Website');
 
                 return $this->do_list($argv);
@@ -285,11 +262,8 @@ class LastWordController extends Controller {
                 G::msg('Failed to save Website.', 'error');
             }
         }
-        $websites = $this->DB->fetch(Website::class);
-        foreach ($websites as $k => $v) {
-            $websites[$k] = $v->getAll();
-        }
-        $this->View->Websites = $websites;
+
+        $this->View->Websites = $this->DB->fetch(Website::class);
 
         return $this->View;
     }

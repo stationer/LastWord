@@ -1,42 +1,53 @@
 <?php
-/*****************************************************************************
- * Project     : LastWord
- *                Deterministic Password Generator
- * Created By  : LoneFry
- *                dev@lonefry.com
- * License     : CC BY-NC-SA
- *                Creative Commons Attribution-NonCommercial-ShareAlike
- *                http://creativecommons.org/licenses/by-nc-sa/3.0/
- * File        : /^LastWord/models/Service.php
- *                A Website, holds information about a website's login form
- ****************************************************************************/
+/**
+ * File: /^LastWord/models/Website.php
+ *
+ * PHP version 7
+ *
+ * @category LoneFry
+ * @package  LastWord
+ * @author   LoneFry <dev@lonefry.com>
+ * @license  Creative Commons CC-NC-BY-SA
+ * @link     http://github.com/LoneFry/LastWord
+ */
 
-
-/*
- * Website - 
- * see Record.php for details.
+/**
+ * Website class -
+ * A Website, holds information about a website's login form
+ * File: /^LastWord/models/Website.php
+ *
+ * PHP version 7
+ *
+ * @category LoneFry
+ * @package  LastWord
+ * @author   LoneFry <dev@lonefry.com>
+ * @license  Creative Commons CC-NC-BY-SA
+ * @link     http://github.com/LoneFry/LastWord
  */
 class Website extends Record {
-    protected static $table = 'LW_Websites';
-    protected static $pkey  = 'lww_id';
+    protected static $table = G_DB_TABL.'LW_Websites';
+    protected static $pkey = 'lww_id';
     protected static $query = '';
-    
-    public static function prime() {
-        self::$table = G::$M->tabl.self::$table;
-        self::$query = 'SELECT t.`lww_id`, t.`label`, t.`loginURI`, '
-            .'t.`userField`, t.`passField`, t.`iDateCreated`, t.`iDateModified`'
-            .' FROM `'.self::$table.'` t';
-        self::$vars['iDateCreated']['def'] = NOW;
-    }
-    
-    protected static $vars = array(
-        'lww_id'        =>array('type'=>'i', 'min'=>1, 'guard'=>true),
-        'label'         =>array('type'=>'s', 'max'=>255),
-        'loginURI'      =>array('type'=>'s', 'max'=>255),
-        'userField'     =>array('type'=>'s', 'max'=>255),
-        'passField'     =>array('type'=>'s', 'max'=>255),
-        'iDateCreated'  =>array('type'=>'ts'),
-        'iDateModified' =>array('type'=>'ts'),
-    );
+
+    protected static $vars = [
+        'lww_id'        => ['type' => 'i', 'min' => 1, 'guard' => true],
+        'label'         => ['type' => 's', 'max' => 255],
+        'loginURI'      => ['type' => 's', 'max' => 255],
+        'userField'     => ['type' => 's', 'max' => 255],
+        'passField'     => ['type' => 's', 'max' => 255],
+        'iDateCreated'  => ['type' => 'ts', 'def' => NOW, 'guard' => true],
+        'iDateModified' => ['type' => 'ts', 'def' => NOW, 'guard' => true],
+    ];
 }
-Website::prime();
+/*
+CREATE TABLE `LW_Websites` (
+  `lww_id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) NOT NULL,
+  `loginURI` varchar(255) NOT NULL,
+  `userField` varchar(255) NOT NULL,
+  `passField` varchar(255) NOT NULL,
+  `iDateCreated` int(11) NOT NULL,
+  `iDateModified` int(11) NOT NULL,
+  PRIMARY KEY (`lww_id`)
+) 
+ */
