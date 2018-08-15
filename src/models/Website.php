@@ -11,6 +11,10 @@
  * @link     http://github.com/LoneFry/LastWord
  */
 
+namespace Stationer\LastWord\models;
+
+use Stationer\Graphite\data\PassiveRecord;
+
 /**
  * Website class -
  * A Website, holds information about a website's login form
@@ -23,8 +27,15 @@
  * @author   LoneFry <dev@lonefry.com>
  * @license  Creative Commons CC-NC-BY-SA
  * @link     http://github.com/LoneFry/LastWord
+ * @property int    lww_id
+ * @property string label
+ * @property string loginURI
+ * @property string userField
+ * @property string passField
+ * @property int    iDateCreated
+ * @property int    iDateModified
  */
-class Website extends Record {
+class Website extends PassiveRecord {
     protected static $table = G_DB_TABL.'LW_Websites';
     protected static $pkey = 'lww_id';
     protected static $query = '';
@@ -39,15 +50,3 @@ class Website extends Record {
         'iDateModified' => ['type' => 'ts', 'def' => NOW, 'guard' => true],
     ];
 }
-/*
-CREATE TABLE `LW_Websites` (
-  `lww_id` int(11) NOT NULL AUTO_INCREMENT,
-  `label` varchar(255) NOT NULL,
-  `loginURI` varchar(255) NOT NULL,
-  `userField` varchar(255) NOT NULL,
-  `passField` varchar(255) NOT NULL,
-  `iDateCreated` int(11) NOT NULL,
-  `iDateModified` int(11) NOT NULL,
-  PRIMARY KEY (`lww_id`)
-) 
- */

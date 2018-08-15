@@ -1,3 +1,4 @@
+<?php use Stationer\Graphite\G; ?>
         <div id="subheader">
             <a href="/LastWord/intro">Intro</a>
             <a href="/LastWord/faq">FAQ</a>

@@ -12,6 +12,13 @@
  * @link     http://github.com/LoneFry/LastWord
  */
 
+namespace Stationer\LastWord\controllers;
+use Stationer\Graphite\Controller;
+use Stationer\Graphite\data\IDataProvider;
+use Stationer\Graphite\View;
+use Stationer\Graphite\G;
+use Stationer\LastWord\models\Website;
+use Stationer\LastWord\models\Account;
 /**
  * LastWordController class -
  * Main Controller for 'LastWord' Deterministic Password (Re)Generator
@@ -274,7 +281,7 @@ class LastWordController extends Controller {
      * @param array $argv    Argument list passed from Dispatcher
      * @param array $request Request_method-specific parameters
      *
-     * @return View
+     * @return Void
      */
     public function do_json(array $argv = [], array $request = []) {
         $json = ['success' => false];

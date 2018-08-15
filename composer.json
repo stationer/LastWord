@@ -1,0 +1,22 @@
+{
+  "name": "stationer/lastword",
+  "description": "Deterministic password generator, manager",
+  "homepage": "https://github.com/stationer/LastWord",
+  "require": {
+    "php": "^7.0",
+    "stationer/graphite": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Stationer\\Barrel\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/stationer/Graphite"
+    }
+  ]
+}
