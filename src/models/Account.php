@@ -1,14 +1,13 @@
 <?php
 /**
- * File: /^LastWord/models/Account.php
+ * File: /src/models/Account.php
  *
  * PHP version 7
  *
- * @category LoneFry
- * @package  LastWord
- * @author   LoneFry <dev@lonefry.com>
- * @license  Creative Commons CC-NC-BY-SA
- * @link     http://github.com/LoneFry/LastWord
+ * @package  Stationer\LastWord
+ * @author   Tyler Uebele
+ * @license  MIT https://github.com/stationer/LastWord/blob/master/LICENSE
+ * @link     http://github.com/stationer/LastWord
  */
 
 namespace Stationer\LastWord\models;
@@ -18,43 +17,44 @@ use Stationer\Graphite\data\PassiveRecord;
 /**
  * Account class -
  * An Account for which the user stores/generates credentials
- * File: /^LastWord/models/Account.php
+ * File: /src/models/Account.php
  *
  * PHP version 7
  *
- * @category LoneFry
- * @package  LastWord
- * @author   LoneFry <dev@lonefry.com>
- * @license  Creative Commons CC-NC-BY-SA
- * @link     http://github.com/LoneFry/LastWord
- * @property int    lwr_id
- * @property int    login_id
- * @property string service
- * @property string loginURI
- * @property string userField
- * @property string passField
- * @property string username
- * @property int    resetCount
- * @property int    passLen
- * @property int    iDateCreated
- * @property int    iDateModified
+ * @package  Stationer\LastWord
+ * @author   Tyler Uebele
+ * @license  MIT https://github.com/stationer/LastWord/blob/master/LICENSE
+ * @link     http://github.com/stationer/LastWord
+ * @see      PassiveRecord.php
+ * @property int    $lwr_id
+ * @property int    $created_uts
+ * @property string $updated_dts
+ * @property int    $login_id
+ * @property string $service
+ * @property string $loginURI
+ * @property string $userField
+ * @property string $passField
+ * @property string $username
+ * @property int    $resetCount
+ * @property int    $passLen
  */
 class Account extends PassiveRecord {
-    protected static $table = G_DB_TABL.'LW_Accounts';
+    protected static $table = G_DB_TABL.'Account';
     protected static $pkey = 'lwr_id';
+    protected static $keys = ['login_id'];
     protected static $query = '';
 
     protected static $vars = [
-        'lwr_id'        => ['type' => 'i', 'min' => 1, 'guard' => true],
-        'login_id'      => ['type' => 'i', 'min' => 1],
-        'service'       => ['type' => 's', 'max' => 255],
-        'loginURI'      => ['type' => 's', 'max' => 255],
-        'userField'     => ['type' => 's', 'max' => 255],
-        'passField'     => ['type' => 's', 'max' => 255],
-        'username'      => ['type' => 's', 'max' => 255],
-        'resetCount'    => ['type' => 'i'],
-        'passLen'       => ['type' => 'i', 'min' => 1, 'def' => 10],
-        'iDateCreated'  => ['type' => 'ts', 'def' => NOW, 'guard' => true],
-        'iDateModified' => ['type' => 'ts', 'def' => NOW, 'guard' => true],
+        'lwr_id'      => ['type' => 'i', 'min' => 1, 'guard' => true],
+        'created_uts' => ['type' => 'ts', 'min' => 0, 'guard' => true],
+        'updated_dts' => ['type' => 'dt', 'min' => NOW, 'def' => NOW, 'guard' => true],
+        'login_id'    => ['type' => 'i', 'min' => 1],
+        'service'     => ['type' => 's', 'max' => 255],
+        'loginURI'    => ['type' => 's', 'max' => 255],
+        'userField'   => ['type' => 's', 'max' => 255],
+        'passField'   => ['type' => 's', 'max' => 255],
+        'username'    => ['type' => 's', 'max' => 255],
+        'resetCount'  => ['type' => 'i', 'max' => 255],
+        'passLen'     => ['type' => 'i', 'min' => 1, 'max' => 255, 'def' => 12],
     ];
 }

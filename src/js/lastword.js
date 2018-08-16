@@ -6,11 +6,11 @@
  * License     : CC BY-NC-SA
  *                Creative Commons Attribution-NonCommercial-ShareAlike
  *                http://creativecommons.org/licenses/by-nc-sa/3.0/
- * File        : /^LastWord/js/lastword.js
+ * File        : /src/js/lastword.js
  *                Scripts specific to LastWord application
  ****************************************************************************/
 
-var appPath = '/^LastWord';
+var appPath = '/vendor/stationer/lastword/src/';
 var timer = null;
 var aList = {};
 var aMnem = {'a':'circle_blue.png',       'b':'circle_cyan.png',

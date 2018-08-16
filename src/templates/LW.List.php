@@ -9,7 +9,7 @@
                     <label for="lastword_masterKey">Enter your Master Key here:</label>
                     <input type="password" name="" id="lastword_masterKey" onkeydown="return ajas.event.catchReturn(event);"
                         onkeyup="update_();" onchange="update_();">
-                    <span class="help" id="lastword_keyVisual" title="These icons help you know if you entered your Master Key correctly."><img src="/^LastWord/images/EnterKey.gif" alt="Enter your Master Key to get your Passwords" title="Enter your Master Key to get your Passwords"></span>
+                    <span class="help" id="lastword_keyVisual" title="These icons help you know if you entered your Master Key correctly."><img src="/vendor/stationer/lastword/src/images/EnterKey.gif" alt="Enter your Master Key to get your Passwords" title="Enter your Master Key to get your Passwords"></span>
                 </div></form>
                 <div class="bottom"></div></div>
             
@@ -32,11 +32,11 @@
                         <td><a href="/LastWord/edit/'.$v->lwr_id.'">edit</a></td>
                         <td id="lw'.$k.'_s">'.$v->service.'</td>
                         <td id="lw'.$k.'_u">'.$v->username.'</td>
-                        <td class="resetCount"><a href="javascript:void(0);" onclick="resetPass('.$k.',-1);return false;"><img width="16" height="16" alt="Choose Previous Password" title="Choose Previous Password" src="/^LastWord/images/down.png"></a></td>
+                        <td class="resetCount"><a href="javascript:void(0);" onclick="resetPass('.$k.',-1);return false;"><img width="16" height="16" alt="Choose Previous Password" title="Choose Previous Password" src="/vendor/stationer/lastword/src/images/down.png"></a></td>
                         <td id="lw'.$k.'_r" class="resetCount">'.$v->resetCount.'</td>
-                        <td class="resetCount"><a href="javascript:void(0);" onclick="resetPass('.$k.',1);return false;"><img width="16" height="16" alt="Choose Next Password" title="Choose Next Password" src="/^LastWord/images/up.png"></a></td>
+                        <td class="resetCount"><a href="javascript:void(0);" onclick="resetPass('.$k.',1);return false;"><img width="16" height="16" alt="Choose Next Password" title="Choose Next Password" src="/vendor/stationer/lastword/src/images/up.png"></a></td>
                         <td id="lw'.$k.'_p3" class="checker2" onmouseover="this.className=\'\';" onmouseout="this.className=\'checker2\';">Enter Key</td>
-                        <td>'.(strlen($v->loginURI)<8?'':'<a href="'.$v->loginURI.'" onclick="return remoteLogin('.$k.',document.getElementById(\'lw'.$k.'_p3\').innerHTML);"><img width="16" height="16" alt="login" title="Login Remotely with the Secure password" src="/^LastWord/images/right.png"></a>').'</td>
+                        <td>'.(strlen($v->loginURI)<8?'':'<a href="'.$v->loginURI.'" onclick="return remoteLogin('.$k.',document.getElementById(\'lw'.$k.'_p3\').innerHTML);"><img width="16" height="16" alt="login" title="Login Remotely with the Secure password" src="/vendor/stationer/lastword/src/images/right.png"></a>').'</td>
                         <td id="lw'.$k.'_m"></td>
                     </tr>';
                 } else {

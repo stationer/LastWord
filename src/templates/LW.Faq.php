@@ -39,8 +39,8 @@
             </p>
             <h2>What if I want to change a password?</h2>
             <p>Simple!  Click on the 
-                <img src="/^LastWord/images/down.png" alt="down">
-                and <img src="/^LastWord/images/up.png" alt="up">
+                <img src="/vendor/stationer/lastword/src/images/down.png" alt="down">
+                and <img src="/vendor/stationer/lastword/src/images/up.png" alt="up">
                 arrows in the "Password #" column to choose a new password. The
                 number specified here is added to the Service name, Username and
                 Master Key when producing your password.  A different number 

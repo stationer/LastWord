@@ -1,15 +1,14 @@
 <?php
 /**
  * Main Controller for 'LastWord' Deterministic Password (Re)Generator
- * File: /^LastWord/controllers/LastWordController.php
+ * File: /src/controllers/LastWordController.php
  *
  * PHP version 7
  *
- * @category LoneFry
- * @package  LastWord
- * @author   LoneFry <dev@lonefry.com>
- * @license  Creative Commons CC-NC-BY-SA
- * @link     http://github.com/LoneFry/LastWord
+ * @package  Stationer\LastWord
+ * @author   Tyler Uebele
+ * @license  MIT https://github.com/stationer/LastWord/blob/master/LICENSE
+ * @link     http://github.com/stationer/LastWord
  */
 
 namespace Stationer\LastWord\controllers;
@@ -22,7 +21,7 @@ use Stationer\LastWord\models\Account;
 /**
  * LastWordController class -
  * Main Controller for 'LastWord' Deterministic Password (Re)Generator
- * File: /^LastWord/controllers/LastWordController.php
+ * File: /src/controllers/LastWordController.php
  *
  * PHP version 7
  *
@@ -45,13 +44,14 @@ class LastWordController extends Controller {
     public function __construct($argv = [], IDataProvider $DB = null, View $View = null) {
         parent::__construct($argv, $DB, $View);
 
-        $this->View->_link('stylesheet', 'text/css', '/^LastWord/css/lastword.css');
-        $this->View->_script('/^LastWord/js/lastword.js');
-        $this->View->_script('/^LastWord/js/sha1.js');
-        $this->View->_script('/^LastWord/js/ajas.js');
-        $this->View->_script('/^LastWord/js/ajas.util.js');
-        $this->View->_script('/^LastWord/js/ajas.http.js');
-        $this->View->_script('/^LastWord/js/ajas.event.js');
+        $path = str_replace(SITE, '', dirname(__DIR__));
+        $this->View->_link('stylesheet', 'text/css', $path.'/css/lastword.css');
+        $this->View->_script($path.'/js/lastword.js');
+        $this->View->_script($path.'/js/sha1.js');
+        $this->View->_script($path.'/js/ajas.js');
+        $this->View->_script($path.'/js/ajas.util.js');
+        $this->View->_script($path.'/js/ajas.http.js');
+        $this->View->_script($path.'/js/ajas.event.js');
         $this->View->setTemplate('subheader', 'LW.subheader.php');
     }
 
@@ -173,6 +173,7 @@ class LastWordController extends Controller {
         $this->View->_template = 'LW.Edit.php';
         $this->View->_title    = $this->View->_siteName.' : LastWord : Edit';
 
+        /** @var Account $Account */
         $Account = $this->DB->byPK(Account::class, $argv[1]);
         if (false === $Account || G::$S->Login->login_id != $Account->login_id) {
             G::msg('Requested LastWord Account not found', 'error');
@@ -198,7 +199,7 @@ class LastWordController extends Controller {
             // Filter POST data to expected fields
             $request = array_intersect_key($request, array_flip($fields));
             $Account->setAll($request, true);
-            $Account->iDateModified = NOW;
+            $Account->updated_dts = NOW;
 
             if ('' == $Account->service) {
                 G::msg('Service name must not be blank', 'error');
@@ -294,6 +295,7 @@ class LastWordController extends Controller {
             $json['alert'] = 'Expected parameters not found!';
             die(json_encode($json));
         }
+        /** @var Account $Account */
         $Account = $this->DB->byPK(Account::class, $request['lwr_id']);
         if (false === $Account) {
             $json['alert'] = 'Specified id was not found!';
@@ -304,8 +306,8 @@ class LastWordController extends Controller {
             die(json_encode($json));
         }
 
-        $Account->resetCount    = $request['resetCount'];
-        $Account->iDateModified = NOW;
+        $Account->resetCount  = $request['resetCount'];
+        $Account->updated_dts = NOW;
         if (false === $this->DB->save($Account)) {
             die(json_encode($json));
         } else {
