@@ -45,7 +45,7 @@ class LastWordController extends Controller {
         parent::__construct($argv, $DB, $View);
 
         $path = str_replace(SITE, '', dirname(__DIR__));
-        $this->View->_link('stylesheet', 'text/css', $path.'/css/lastword.css');
+       // $this->View->_link('stylesheet', 'text/css', $path.'/css/lastword.css');
         $this->View->_script($path.'/js/lastword.js');
         $this->View->_script($path.'/js/sha1.js');
         $this->View->_script($path.'/js/ajas.js');
