@@ -42,7 +42,7 @@ class Website extends PassiveRecord {
     protected static $vars = [
         'lww_id'      => ['type' => 'i', 'min' => 1, 'guard' => true],
         'created_uts' => ['type' => 'ts', 'min' => 0, 'guard' => true],
-        'updated_dts' => ['type' => 'dt', 'min' => NOW, 'def' => NOW, 'guard' => true],
+        'updated_dts' => ['type' => 'dt', 'def' => NOW, 'guard' => true],
         'label'       => ['type' => 's', 'max' => 255],
         'loginURI'    => ['type' => 's', 'max' => 255],
         'userField'   => ['type' => 's', 'max' => 255],
