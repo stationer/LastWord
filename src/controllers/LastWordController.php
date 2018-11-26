@@ -46,6 +46,7 @@ class LastWordController extends Controller {
 
         $path = str_replace(SITE, '', dirname(__DIR__));
         $this->View->_link('stylesheet', 'text/css', $path.'/css/lastword.css');
+        $this->View->_style(str_replace(SITE, '', dirname(__DIR__).'/css/letterhead.css'));
         $this->View->_script($path.'/js/lastword.js');
         $this->View->_script($path.'/js/sha1.js');
         $this->View->_script($path.'/js/ajas.js');
@@ -100,12 +101,12 @@ class LastWordController extends Controller {
             return $this->do_intro($argv);
         }
 
-        $Account = $this->DB->fetch(Account::class, ['login_id' => G::$S->Login->login_id], ['service' => true]);
+        $Accounts = $this->DB->fetch(Account::class, ['login_id' => G::$S->Login->login_id], ['service' => true]);
 
         $this->View->_template = 'LW.List.php';
         $this->View->_title    = $this->View->_siteName.' : LastWord : List';
-        $this->View->list      = $Account;
-        $this->View->json      = json_encode($Account);
+        $this->View->Accounts  = $Accounts;
+        $this->View->json      = json_encode($Accounts);
 
         return $this->View;
     }
@@ -141,8 +142,7 @@ class LastWordController extends Controller {
                 G::msg('Username must not be blank', 'error');
             } elseif (false !== $this->DB->save($Account)) {
                 G::msg('Added Account');
-
-                return $this->do_list($argv);
+                $this->_redirect('/LastWord/list');
             } else {
                 G::msg('Failed to add account.', 'error');
             }
@@ -186,8 +186,7 @@ class LastWordController extends Controller {
             $result = $this->DB->delete($Account);
             if (true === $result) {
                 G::msg('Deleted Account');
-
-                return $this->do_list($argv);
+                $this->_redirect('/LastWord/list');
             } else {
                 G::msg('Failed to delete account.', 'error');
             }
@@ -207,8 +206,7 @@ class LastWordController extends Controller {
                 G::msg('Username must not be blank', 'error');
             } elseif (false !== $this->DB->save($Account)) {
                 G::msg('Edited Account');
-
-                return $this->do_list($argv);
+                $this->_redirect('/LastWord/list');
             } else {
                 G::msg('Failed to edit account.', 'error');
             }
